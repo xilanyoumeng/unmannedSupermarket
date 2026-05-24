@@ -1,0 +1,8 @@
+.\.venv\Scripts\python.exe -m uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+
+
+
+# 全量生成
+.\.venv\Scripts\python.exe .\scripts\build_product_image_vectors.py
+
+.\.venv\Scripts\python.exe .\scripts\build_product_image_vectors.py --resume

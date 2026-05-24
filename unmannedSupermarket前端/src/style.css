@@ -1,0 +1,137 @@
+:root {
+  --primary: #1677FF;
+  --primary-dark: #0f5fcf;
+  --bg-light: #F5F7FA;
+  --white: #FFFFFF;
+  --gray-text: #5A6874;
+  --border-light: #E9EDF2;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --radius-card: 20px;
+  --font-size-base: 16px;
+}
+
+/* 夜间模式 */
+html.dark {
+  --primary: #4096ff;
+  --primary-dark: #1677FF;
+  --bg-light: #141414;
+  --white: #1f1f1f;
+  --gray-text: #b0b8c2;
+  --border-light: #333;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+html.dark body {
+  background: #141414;
+  color: #e0e0e0;
+}
+
+/* 登录页夜间模式背景覆盖（LoginView有自己的背景渐变） */
+html.dark .login-page {
+  background: linear-gradient(135deg, #1a1a2e 0%, #141414 100%) !important;
+}
+
+html.dark .login-card {
+  background: #1f1f1f !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .login-header h2 {
+  color: #4096ff;
+}
+
+html.dark .login-header p,
+html.dark .login-footer {
+  color: #888;
+}
+
+/* ===== 全局夜间模式覆盖 ===== */
+html.dark .admin-content {
+  background: #1f1f1f !important;
+}
+
+html.dark .recog-output,
+html.dark .search-bar {
+  background: #252525 !important;
+}
+
+html.dark .upload-box {
+  border-color: #444 !important;
+}
+
+html.dark .image-placeholder {
+  border-color: #555 !important;
+}
+
+html.dark .image-placeholder-plus,
+html.dark .image-placeholder-text,
+html.dark .no-image,
+html.dark .loading-text,
+html.dark .empty-cart,
+html.dark .checkout-note,
+html.dark .product-stock,
+html.dark .elder-desc,
+html.dark .home-tagline {
+  color: #888 !important;
+}
+
+html.dark .hero-card p,
+html.dark .feature-card p {
+  color: #b0b8c2 !important;
+}
+
+/* 适老化模式 */
+body.elder-mode {
+  --font-size-base: 20.8px;
+  --primary: #005fcc;
+  --bg-light: #f0f2f5;
+  --gray-text: #1e2a3a;
+  --border-light: #3c4b5a;
+  letter-spacing: 0.5px;
+
+  /* Element Plus 适老化覆盖 */
+  --el-font-size-base: 20.8px;
+  --el-color-primary: #005fcc;
+  --el-border-color: #3c4b5a;
+}
+
+body.elder-mode .card,
+body.elder-mode button,
+body.elder-mode input {
+  border-width: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.elder-mode .el-button,
+body.elder-mode .el-input__inner {
+  border-width: 2px;
+}
+
+body.elder-mode .el-card {
+  border-width: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', '微软雅黑', '思源黑体', system-ui, -apple-system, sans-serif;
+  background: var(--bg-light);
+  color: #1F2A3E;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+}

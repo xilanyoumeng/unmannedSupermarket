@@ -500,6 +500,28 @@ class ShoppingAgent:
             "top_p": llm_config.get("top_p", 0.9),
         }
 
+    @staticmethod
+    def _should_pass_reasoning_content(llm_config: dict) -> bool:
+        """DeepSeek V4 thinking tool-call turns require reasoning_content passback."""
+        provider = str(llm_config.get("provider") or "").lower()
+        base_url = str(llm_config.get("base_url") or "").lower()
+        model = str(llm_config.get("model") or "").lower()
+
+        is_deepseek = (
+            "deepseek" in provider
+            or "deepseek" in base_url
+            or "deepseek" in model
+            or provider == "ds"
+            or model.startswith("ds-")
+        )
+        is_v4_thinking_model = (
+            "v4" in model
+            or "v-4" in model
+            or "v4pro" in model
+            or "v4-pro" in model
+        )
+        return is_deepseek and is_v4_thinking_model
+
     async def _resolve_llm_runtime_config(self) -> dict:
         """优先使用当前用户保存在Java后端的模型配置；没有则回退到config.yaml。"""
         try:
@@ -989,6 +1011,7 @@ class ShoppingAgent:
 
             # 累积流式响应
             text_parts: list[str] = []
+            reasoning_parts: list[str] = []
             streamed_text_len = 0
             tool_call_acc: dict[int, dict] = {}
             finish_reason = None
@@ -998,6 +1021,9 @@ class ShoppingAgent:
                     continue
                 delta = chunk.choices[0].delta
                 finish_reason = chunk.choices[0].finish_reason
+                reasoning_delta = getattr(delta, "reasoning_content", None)
+                if reasoning_delta:
+                    reasoning_parts.append(reasoning_delta)
 
                 # 累积 tool_calls
                 if delta.tool_calls:
@@ -1006,6 +1032,7 @@ class ShoppingAgent:
                         if idx not in tool_call_acc:
                             tool_call_acc[idx] = {
                                 "id": "",
+                                "type": "function",
                                 "function": {"name": "", "arguments": ""},
                             }
                         acc = tool_call_acc[idx]
@@ -1041,6 +1068,8 @@ class ShoppingAgent:
                     "content": "".join(text_parts) if text_parts else None,
                     "tool_calls": tool_calls,
                 }
+                if reasoning_parts and self._should_pass_reasoning_content(llm_config):
+                    assistant_msg["reasoning_content"] = "".join(reasoning_parts)
                 messages.append(assistant_msg)
 
                 # 解析所有工具调用参数

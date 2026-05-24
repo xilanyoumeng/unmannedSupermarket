@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: unmannedSupermarket
+  datasource:
+    url: jdbc:mysql://localhost:3306/unmanned_supermarket?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.itheima.unmannedsupermarket.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  secret: unmannedSupermarketSecretKey2026abcdefghijklmnopqrstuvwxyz
+  expiration: 7200000
+
+server:
+  port: 8065
+
+# API Key 认证，供 Python 等第三方服务调用
+api:
+  key: ${JAVA_INTERNAL_API_KEY:lhmdejavaapi}
+
+ai:
+  config-secret: ${AI_CONFIG_SECRET:${jwt.secret}}
+
+# Alibaba Cloud OSS configuration
+# Set these environment variables on your machine:
+#   OSS_ACCESS_KEY_ID     - Alibaba Cloud AccessKey ID
+#   OSS_ACCESS_KEY_SECRET - Alibaba Cloud AccessKey Secret
+#   OSS_BUCKET_NAME       - OSS bucket name
+#   OSS_ENDPOINT          - OSS endpoint (e.g., oss-cn-hangzhou.aliyuncs.com)
+oss:
+  access-key-id: LTAI5tMcNy6j4t6pQKoV9uuw
+  access-key-secret: ${OSS_ACCESS_KEY_SECRET}
+  bucket-name: java-ailhm
+  endpoint: oss-cn-beijing.aliyuncs.com
